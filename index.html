@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homepage</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+      background-color: white;
+      color: #333;
+    }
+    h1 { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+  <h1>Try N.U. Apps Now!</h1>
+  <p>Run Apps without any domain or requirement of extra files!<br>When you install, recharge this page!</p>
+
+  <script>
+    // Se já estiver instalado, redireciona imediatamente
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+      window.location.href = 'main-menu.html';
+    }
+
+    // Registro do Service Worker obrigatório
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+      });
+    }
+  </script>
+</body>
+</html>
