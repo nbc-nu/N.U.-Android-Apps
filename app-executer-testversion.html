@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="manifest" href="/manifest.json">
+</head>
+<body>
+<script>
+
+    const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+    if (!isPWA) {
+
+        window.location.href = "https://nbc-nu.github.io/N.U.-Android-Apps/";
+    } else {
+
+        const urlStr = window.location.href;
+        const match = urlStr.match(/[?&]c=([^&]+)/);
+        
+        if (match && match[1]) {
+            try {
+                let base64Code = match[1];
+                base64Code = base64Code.replace(/[^A-Za-z0-9+/=_-]/g, '');
+                base64Code = base64Code.padEnd(base64Code.length + (4 - base64Code.length % 4) % 4, '=');
+                
+                const binaryString = window.atob(base64Code.replace(/-/g, '+').replace(/_/g, '/'));
+                const len = binaryString.length;
+                const bytes = new Uint8Array(len);
+                
+                for (let i = 0; i < len; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                
+                const decodedHtml = new TextDecoder('utf-8').decode(bytes);
+                
+
+                document.documentElement.innerHTML = decodedHtml;
+            } catch (e) {
+                document.body.innerHTML = "<h1>ERROR!</h1><br><pre>this app run into a problem, please report or restart this app.</pre>";
+            }
+        } else {
+            document.body.innerHTML = "<title>Error ):</title><header style='background-color: #FFDE00; color: #333333; padding: 20px 40px; font-family: sans-serif; box-shadow: 0 2px 5px rgba(0,0,0,0.1); '><h1 style='font-size: 24px; font-weight: bold; margin: 0;'>Hey!</h1></header><pre>This app do not have any content!</pre>";
+        }
+    }
+</script>
+</body>
+</html>
